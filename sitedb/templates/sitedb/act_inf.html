@@ -1,0 +1,11 @@
+<div class = 'act'>
+    <a href="{% url 'one_act' act.id %}"><img src={{ act.persecution.victim.photo.url }}  height="80" ></a>
+    <li> Кейс: <a href="{% url 'one_case' act.persecution.case.id %}">{{ act.persecution.case }}</a></li>
+    <li> Пострадавший: <a href="{% url 'one_person' act.persecution.victim.id %}">{{ act.persecution.victim }}</a></li>
+    <li> Дата: {{ act.date }} </li>
+    <li>{{ act.type_of_act }}
+            {% if  act.сase_decision %};
+            - {{ act.сase_decision }}
+            {% endif %}
+        <a href="{% url 'one_act' act.id %}">Подробнее</a></li>
+</div>

@@ -1,0 +1,10 @@
+
+
+{% include 'sitedb/filters/persecution_filter.html' %}
+
+{% include 'sitedb/filters/act_filter.html' %}
+
+        {% for key, values in sec_form.items %}
+            {% include 'sitedb/filters/filter_set.html' %}
+        <p></p>
+        {% endfor %}

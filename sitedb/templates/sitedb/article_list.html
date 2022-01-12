@@ -1,0 +1,22 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block title %}{% endblock %}
+
+{% block main %}
+
+    <body>
+        {% block body %}
+        {% for art in object_list %}
+        <p>{{ art }}</p>
+        {% endfor %}
+        {% endblock %}
+
+    </body>
+
+{% endblock%}
+
+{% block search %}
+{% endblock %}
+
+{% block navigation %}
+{% endblock %}

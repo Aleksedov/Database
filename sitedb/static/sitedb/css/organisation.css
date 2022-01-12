@@ -1,0 +1,22 @@
+main .organisation_inf {
+    float: left;
+    display: block;
+    border: 1px solid rgb(30,130,120);
+    width: 100%;
+}
+
+main .organisation_inf img {
+    float: left;
+    object-fit: cover;
+    margin-right: 2px;
+    width: 70px;
+    height: 70px;
+}
+
+main .organisation_inf h3 {
+    font-size: 24px
+}
+
+main .organisation_inf b {
+    font-size: 20px
+}

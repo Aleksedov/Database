@@ -1,0 +1,27 @@
+{% extends 'sitedb/persons.html' %}
+
+{% block title %}Пострадавшие{% endblock %}
+
+{% block body_head %}
+<h1> Список пострадавших </h1>
+<h2> Всего в базе: {{ total }}. Выбрано: {{ selected }}. </h2>
+{% endblock %}
+
+{% block filtres %}
+<h2>Фильтры</h2>
+    <form id="filter-form" action='/victims/'  method="GET">
+        <div class="custom-control custom-switch">
+            {% if rest_form %}
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="allpers" checked>
+            <label class="custom-control-label" for="customSwitch1">Показать всех</label>
+            {% else %}
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="allpers" >
+            <label class="custom-control-label" for="customSwitch1">Показать лишенных свободы</label>
+            {% endif %}
+        </div>
+        <br>
+        {% include 'sitedb/filtres_restiction.html' %}
+        <br>
+        <input type="submit" value="Select / Reset">
+    </form>
+{% endblock %}

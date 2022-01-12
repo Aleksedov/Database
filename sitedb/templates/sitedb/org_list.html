@@ -1,0 +1,93 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block title %}Организации{% endblock %}
+
+{% block main %}
+
+    <body>
+        {% include 'sitedb/pagination.html' %}
+        {% block body %}
+        {% for org in object_list %}
+            {% include 'sitedb/org_inf.html' %}
+        {% endfor %}
+        {% endblock %}
+
+        {% include 'sitedb/pagination.html' %}
+    </body>
+
+{% endblock%}
+
+
+{% block filtres %}
+<h2>Фильтры</h2>
+    <form id="filter-form" action='/organisations/'  method="GET">
+
+<!--<div class="form-check">-->
+<!--    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>-->
+<!--    <label class="form-check-label" for="exampleRadios1">-->
+<!--    Выбрать все-->
+<!--    </label>-->
+<!--    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">-->
+<!--    <label class="form-check-label" for="exampleRadios2">-->
+<!--    Места лишения свободы-->
+<!--    </label>-->
+<!--</div>-->
+
+<!--<div class="form-check">-->
+<!--    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">-->
+<!--    <label class="form-check-label" for="exampleRadios3">-->
+<!--    Disabled radio-->
+<!--    </label>-->
+<!--</div>-->
+        <div class="custom-control custom-switch">
+            {% if rest_form %}
+            <input type="checkbox" class="custom-control-input" id="customSwitch2" name="allpers" checked>
+            <label class="custom-control-label" for="customSwitch2">Показать всех</label>
+
+            <div class="custom-control custom-switch">
+                {% if prison_form %}
+                <input type="checkbox" class="custom-control-input" id="customSwitch3" name="allprison" checked>
+                <label class="custom-control-label_1" for="customSwitch3" name="ap_label">С политЗК</label>
+                {% else %}
+                <input type="checkbox" class="custom-control-input" id="customSwitch3" name="allprison" >
+                <label class="custom-control-label_1" for="customSwitch3" name="ap_label">Все</label>
+
+                {% endif %}
+            </div>
+            {% else %}
+            <input type="checkbox" class="custom-control-input" id="customSwitch2" name="allpers" >
+            <label class="custom-control-label" for="customSwitch2">Места лишения свободы</label>
+
+            {% endif %}
+        </div>
+        <br>
+        {% include 'sitedb/filtres_restiction.html' %}
+        <br>
+
+        <input type="submit" value="Select / Reset">
+    </form>
+{% endblock %}
+
+{% block nav %}
+    <form id="search-form_nav" action=''  method="GET">
+        <div class="btn-group dropdown">
+            <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+             Choise
+            </button>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  id="choise">
+                <ul>
+                    <input type="text" class="{{ key }}" placeholder="choice..." id="myInput" onkeyup="fil_Func('choise')">
+                    {% for obj in rest %}
+                        <a href="{% url 'one_org' obj.id %}"><li>{{ obj.short_name }}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+
+    </div>
+    </form>
+    <form id="search" action=''  method="GET">
+            <input name="q" id="search-field_nav" type="text" placeholder="Search..." onkeyup="input_Func(event)">
+    </form>
+{% endblock %}

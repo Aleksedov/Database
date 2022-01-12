@@ -1,0 +1,137 @@
+@import url(header.css);
+@import url(person.css);
+@import url(persecution.css);
+@import url(organisation.css);
+@import url(case.css);
+@import url(pagination.css);
+
+body {
+    background-color: rgb(210,210,210);
+}
+aside {
+    float: left;
+    background: rgb(230,230,230);
+    border-right: 5px solid rgb(30,130,120);
+    border-bottom: 5px solid rgb(30,130,120);
+    height: 2000px;
+    width: 240px;
+    padding: 10px;
+
+}
+aside div img {
+    width: 40px;
+
+}
+
+aside h3 {
+    font-size: 20px
+}
+
+aside span {
+    font-size: 40px;
+    margin-left: 10px;
+    position: relative;
+    top: 10px;
+}
+
+
+aside ul {list-style: none}
+aside ul li{
+    display: block;
+    margin-top: 5px;
+    transition: transform .6s easy;
+}
+
+aside ul li:hover, aside ul a:hover {
+    color: rgb(30,130,120);
+    transform: scale(1.05);
+
+}
+aside .filters h2 {
+    font-size: 20px;
+}
+aside .filters label {
+    font-size: 12px;
+    width: 200px;
+    position: relative;
+    top:8px;
+}
+
+aside .filters select {
+    width: 200px;
+}
+aside .filters #button_search {
+    background-color: rgb(10,110,100);
+    color: white;
+    font-size: 16px;
+}
+
+aside .filters button {
+    width: 220px;
+    height: 32px;
+    background-color: rgb(30,130,120);
+    color: white;
+    font-size: 16px;
+}
+
+aside .filters .dropdown-menu li {
+    padding: 5px
+}
+
+aside .dropdown-menu ul {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 10px 0 0;
+  list-style: none;
+  max-height: 300px;
+  overflow: hidden auto;
+}
+
+
+main {
+    height: 100%;
+    width: calc(100%-240px);
+    padding-left: 18em;
+}
+
+main h3 {
+    font-size: 16px;
+}
+
+
+main .act {
+float: left;
+    display: block;
+    border: 1px solid rgb(30,130,120);
+    width: 100%;
+}
+
+main .act img {
+    float: left;
+    object-fit: cover;
+    width: 120px;
+    height: 100px;
+}
+
+.pagination {
+  display: inline-block;
+  float: bottom;
+  position: absolut;
+  width: 100%;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}

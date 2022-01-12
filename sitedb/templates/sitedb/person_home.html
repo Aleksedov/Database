@@ -1,0 +1,108 @@
+{% extends 'sitedb/persons.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block search %}
+{% endblock %}
+
+{% block main %}
+    <body>
+        <h1>{{ object.name }}</h1>
+        {% if  object.photo %}
+        <img src={{ object.photo.url }}
+            height="200" >
+        {% endif %}
+        <div class = 'inf'>
+            {% if  object.date_of_birth %}
+                <li>Дата рождения {{ object.date_of_birth }}</li>
+            {% endif %}
+            {% if  object.citizenship %}
+                <li>Гражданство: {{ object.citizenship }}</li>
+            {% endif %}
+
+            {% if  object.depr %}
+                <h2>В данный момент лишен свободы</h2>
+                <li>Содержится в <a href="{% url 'one_org' object.depr.organisation.id %}">{{ object.depr.organisation }}</a></li>
+            {% endif %}
+        </div>
+
+        {% if deprivings %}
+        <div class = 'depriving'>
+            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Хронология лишения свободы:
+            </button>
+            <div class="dropdown-menu">
+                {% for place in  deprivings %}
+                    <li>С {{ place.date }} по
+                        {% if place.date_of_end %}
+                            {{ place.date_of_end }} содержался
+                        {% else %}
+                            настоящее время содержится
+                        {% endif %}
+                         в <a href="{% url 'one_org' place.organisation.id %}">{{ place.organisation }}</a></li>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if place_of_work %}
+        <div class = 'experience'>
+            <h2>Место работы</h2>
+            {% for work in place_of_work %}
+                <div class = 'place_of_work'>
+                    <a href="{% url 'one_org' work.оrganisation.id %}"><h3> {{ work.оrganisation }} </h3></a>
+                    <ul>
+                        {% if work.position %}
+                            Должность {{ work.position }}
+                        {% endif %}
+                        {% if work.rank %}
+                            , Звание {{ work.rank }}
+                        {% endif %}
+                    </ul>
+
+                    <ul>
+                        {% if work.date %}
+                            Как минимум с  {{ work.date }}
+                        {% endif %}
+                        {% if work.date_of_end %}
+                            , по {{ work.date_of_end }}
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if p_of_p %}
+            <h2>Преследовался по следующим делам:</h2>
+            {% for persc in  p_of_p%}
+                {% include 'sitedb/persecution_information.html' %}
+            {% endfor %}
+        {% endif %}
+
+        {% if v_of_p %}
+        <div class = 'violations'>
+                 <h2>Участник следующих актов в преследованиях:</h2>
+                    <div class = 'acts'>
+                        {% for viol in v_of_p %}
+                            <div class = 'act'>
+                                <li> Кейс: <a href="{% url 'one_case' viol.act.persecution.case.id %}">{{ viol.act.persecution.case }}</a></li>
+                                <li> Пострадавший: <a href="{% url 'one_person' viol.act.persecution.victim.id %}">{{ viol.act.persecution.victim }}</a></li>
+                                <li> {{ viol.act.date }} - {{ viol.act.type_of_act }}
+                                    {% if  viol.act.сase_decision %}
+                                        - {{ viol.act.сase_decision }}
+                                    {% endif %}
+                                    <a href="{% url 'one_act' viol.act.id %}">Подробнее</a>
+                                </li>
+                            </div>
+                        {% endfor %}
+                    </div>
+             </div>
+        {% endif %}
+    {% block body %}{% endblock %}
+
+    </body>
+{% endblock %}
+
+{% block filter %}
+{% endblock %}

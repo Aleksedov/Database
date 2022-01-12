@@ -1,0 +1,25 @@
+header {
+    border-bottom: 5px solid rgb(30,130,120);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+header div.logo {
+    padding: 5px;
+}
+
+header nav{
+    float: right;
+    float: right;
+    display: flex;
+    align-items: center;
+}
+
+header nav input{
+    width: 330px;
+    height: 36px;
+    padding-right: 2px;
+    margin-right: 10px;
+    font-size: 24px
+}

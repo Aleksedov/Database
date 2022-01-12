@@ -1,0 +1,49 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block main %}
+
+<div class="greeting">
+    {% if user.is_authenticated %}
+    <h2>Приветствуем {{ user.get_username }} в базе нарушений прав человека в Крыму</h2>
+    {% else %}
+    <h2>Приветствуем в базе нарушений прав человека в Крыму</h2>
+    {% endif %}
+    <p>База данных Крымской правозащитной группы содержит информацию о {{ persecution | length}} преследованиях,
+        в отношении {{ victims | length}} человек. В рамках этих преследований зафиксировано  {{ acts | length}} отдельных актов
+        нарушающих права человека.
+<!--        В том числе:-->
+<!--        {% for key, value in violations.items %}-->
+<!--            <ul> {{ key }}: <b>{{ value|length }}</b></ul>-->
+<!--        {% endfor %}-->
+
+    </p>
+
+    <p>Сегодня в местах лишения свободы находятся {{ prisoners | length}} человек.
+    </p>
+
+</div>
+<div style="width:  900px; height: 500px"><canvas id="chartDepr"></canvas></div>
+<div style="width:  900px; height: 500px"><canvas id="chartCriminal"></canvas></div>
+<div style="width:  900px; height: 500px"><canvas id="chartDetention"></canvas></div>
+
+
+<!--<div id="curve_chart" style="width:  900px; height: 500px">-->
+
+<!--<div id="curve_chart_adm" style="width: 900px; height: 500px"></div>-->
+
+
+
+<!--<div id="curve_chart_depr" style="width: 900px; height: 500px"></div>-->
+
+<!--<div class="features">-->
+<!--    <h1>Главная</h1>-->
+<!--    <p>Вы посещали эте страницу {{ num_visits }} раз .</p>-->
+<!--    {% for val in values %}-->
+
+<!--    <p>{{ val }}</p>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+{% endblock%}

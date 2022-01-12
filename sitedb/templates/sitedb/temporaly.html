@@ -1,0 +1,13 @@
+<div class="person">
+    <img src={{ pers.photo.url }}  height="80" >
+    <div class="person_data">
+            <h3><a href="{% url 'person' pers.id %}">{{ pers.name }}</a></h3>
+            {% if  pers.date_of_birth != None %}
+                <li>Дата рождения {{ pers.date_of_birth }}</li>
+            {% endif %}
+            {% if  pers.citizenship != None %}
+                <li>Гражданство: {{ pers.citizenship }}</li>
+            {% endif %}
+
+    </div>
+</div>

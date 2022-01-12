@@ -1,0 +1,8 @@
+<div class="person_box">
+<a href="{% url 'one_person' pers.id %}"><div class="person">
+     <center><b>{{ pers.name }}</b> </center>
+    {% if  pers.photo  %}
+        <img src={{ pers.photo.url }}  height="80" >
+    {% endif %}
+</div></a>
+</div>

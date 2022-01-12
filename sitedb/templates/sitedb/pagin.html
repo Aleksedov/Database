@@ -1,0 +1,72 @@
+{% if taken_request %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        {% if page_obj.has_next %}
+          {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="{{ taken_request }}&page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="{{ taken_request }}&page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+              <li class="page-item"><a class="page-link" href="{{ taken_request }}&page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+              <li class="page-item"><a class="page-link" href="{{ taken_request }}&page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+          {% else %}
+              <li class="page-item"><a class="page-link" href="{{ taken_request }}&page=1">1</a></li>
+              <li class="page-item"><a class="page-link" href="{{ taken_request }}&page=2">2</a></li>
+          {% endif %}
+            <li class="page-item">
+              <a class="page-link" href="{{ taken_request }}&page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+        {% else %}
+             <li class="page-item">
+                <a class="page-link" href="{{ taken_request }}&page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+             </li>
+            {% if page_obj.has_previous %}
+             <li class="page-item"><a class="page-link" href="{{ taken_request }}&page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+            {% endif %}
+             <li class="page-item"><a class="page-link" href="{{ taken_request }}&page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+{% else %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        {% if page_obj.has_next %}
+          {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+          {% else %}
+              <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+              <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+          {% endif %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+        {% else %}
+             <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+             </li>
+            {% if page_obj.has_previous %}
+             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+            {% endif %}
+             <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+

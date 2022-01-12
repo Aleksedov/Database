@@ -1,0 +1,89 @@
+<div class = 'persecution'>
+    {% if persc.act_set.all %}
+
+    {% if object.type != "Person" %}
+         {% if persc.victim.photo %}
+        <img src={{ persc.victim.photo.url }}  height="80" >
+        {% endif %}
+    {% endif %}
+    <div class ='persecution_inf'>
+        <h3><a href="{% url 'one_person' persc.victim.id %}"><b>{{ persc.victim.name }}</b></a></h3>
+        <li>Кейс: <a href="{% url 'one_case' persc.case.id %}">{{ persc.case }}</a></li>
+        <li>Начало преследования: {{ persc.date }}</li>
+        <li>Тип преследования:
+            {% if persc.type_of_pers == 'УК' %}
+                Уголовное
+            {% else  %}
+                {{ persc.type_of_pers }}
+            {% endif %}
+            </li>
+        <li>Статьи обвинения:
+            {% for art_in_pers in persc.articlesinpersecution_set.all %}
+                <a href="{% url 'one_article' art_in_pers.article.id %}">{{ art_in_pers.article }}</a>,
+            {% endfor %}
+        </li>
+
+        {% if persc.status %}
+        <li>Статус в деле: {{ persc.status.status }}</li>
+        {% endif %}
+
+        {% if persc.sentence %}
+            <li>
+            {% if persc.type_of_pers == 'УК' %}
+                Вынесен приговор: <b>{{ persc.sentence_text }}</b>
+             {% else  %}
+                Административное наказание: <b>{{ persc.sentence_text }}</b>
+            {% endif %}
+
+            </li>
+        {% endif %}
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              Акты в преследовании:
+          </button>
+          <div class="dropdown-menu">
+            {% if persc.acts %}
+            {% for act in  persc.acts %}
+                <li><a href="{% url 'one_act' act.id %}">{{ act.date }} - {{ act.type_of_act }}
+                    {% if  act.сase_decision %}
+                        - {{ act.сase_decision }}
+                    {% endif %}
+                </a></li>
+             {% endfor %}
+             {% else %}
+            {% for act in persc.act_set.all %}
+                <li><a href="{% url 'one_act' act.id %}">{{ act.date }} - {{ act.type_of_act }}
+                    {% if  act.сase_decision %}
+                        - {{ act.сase_decision }}
+                    {% endif %}
+                </a></li>
+             {% endfor %}
+            {% endif %}
+
+          </div>
+        </div>
+
+        {% if user.is_authenticated %}
+
+        <div class="btn-group">
+            {% if persc.guilty %}
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          {% else %}
+             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+          onclick="take_items_list('{{ persc.id }}')">
+          {% endif %}
+            Причастные к преследованию:
+          </button>
+          <div class="dropdown-menu" id="{{ persc.id }}" data="{% url 'persons' %}">
+            <ul class="item_list">
+                {% for person in persc.guilty %}
+                    <li><a href="{% url 'one_person' person.id %}">{{ person.name }}</a></li>
+                {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>

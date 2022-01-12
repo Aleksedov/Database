@@ -1,0 +1,17 @@
+{% extends 'sitedb/persons.html' %}
+
+{% block title %}Виновные{% endblock %}
+
+{% block body_head %}
+<h1> Список виновных </h1>
+<h2> Всего в базе: {{ total }}. Выбрано: {{ selected }}. </h2>
+{% endblock %}
+
+{% block filtres %}
+<h2>Фильтры</h2>
+    <form id="filter-form" action='/guilty/'  method="GET">
+        {% include 'sitedb/filtres_restiction.html' %}
+        <br>
+        <input type="submit" value="Select/Reset">
+    </form>
+{% endblock %}

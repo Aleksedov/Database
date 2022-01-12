@@ -1,0 +1,35 @@
+main .person_box {
+    float: left;
+    display: block;
+
+    width: 232px;
+    height: 232px;
+;
+
+}
+
+main .person {
+    float: center;
+    display: block;
+    border: 2px solid rgb(30,130,120);
+    width: 210px;
+    height: 211px;
+    transition: transform 1s;
+
+}
+main .person:hover {
+    transform: scale(1.2,1.2);
+    box-shadow: 10px 10px 20px grey
+
+
+}
+main .person img {
+    float: left;
+    object-fit: cover;
+    width: 206px;
+    height: 162px;
+}
+
+main .person center {
+    height: 46px;
+}

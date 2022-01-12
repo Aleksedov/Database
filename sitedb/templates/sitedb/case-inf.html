@@ -1,0 +1,6 @@
+{% if obj.persecution_set.all|length %}
+<div class="case">
+    <h3><a href="{% url 'one_case' obj.id %}">{{ obj.name }}</a></h3>
+    <li>Преследований в рамках дела - {{ obj.persecution_set.all|length }}</li>
+</div>
+{% endif %}

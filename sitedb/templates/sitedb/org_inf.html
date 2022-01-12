@@ -1,0 +1,15 @@
+<div class = "organisation_inf">
+    {% if  org.srtucture.logo  %}
+        <img src={{ org.srtucture.logo.url  }}  height="60" >
+    {% endif %}
+    <h3><a href="{% url 'one_org' org.id %}">{{ org }}</a></h3>
+    {% if  org.deprivings  %}
+    <p>Сейчас в {{ org }} содержится <b>{{ org.deprivings }}</b>
+        {% if  org.deprivings ==  1 %}
+            крымский политзаключенный
+        {% else %}
+            крымских политзаключенных
+        {% endif %}
+        </p>
+    {% endif %}
+</div>

@@ -1,0 +1,62 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block main %}
+<div class = 'act_inf'>
+    <img src={{ act.persecution.victim.photo.url }}  height="400">
+    <li> Кейс: <a href="{% url 'one_case' act.persecution.case.id %}">{{ act.persecution.case }}</a></li>
+    <li> Пострадавший: <a href="{% url 'one_person' act.persecution.victim.id %}">{{ act.persecution.victim }}</a></li>
+    <li> Тип преследования: {{ act.persecution.type_of_pers }}</a></li>
+
+    {% if act.persecution.articlesinpersecution_set.all %}
+    <li> Статьи обвинения:
+        {% for art in act.persecution.articlesinpersecution_set.all %}
+            <a href="{% url 'one_article' art.article.id %}">{{ art.article }}</a>,
+        {% endfor %}
+    </li>
+    {% endif %}
+
+    <li> Дата: {{ act.date }} </li>
+    <li> Тип акта: {{ act.type_of_act }}
+        {% if act.appeal %}
+         на решение: <a href="{% url 'one_act' act.appeal.id %}">{{ act.appeal.date }}, {{ act.appeal.сase_num }} </a>
+    {% endif %}</li>
+    {% if  act.сase_decision %}
+    <li> Номер дела в суде: {{ act.сase_num }} </li>
+    <li> Тип вынесенного решения - {{ act.сase_decision }}
+        {% if  act.date_of_end %}
+         до {{ act.date_of_end }}
+        {% endif %}
+    </li>
+    {% endif %}
+
+
+
+    {% if  act.sentence %}
+        <li>
+        {% if act.persecution.type_of_pers == 'УК' %}
+            Вынесен приговор: <b>{{ sentence_text }}</b>
+         {% else  %}
+            Административное наказание: <b>{{ sentence_text }}</b>
+        {% endif %}
+
+        </li>
+    {% endif %}
+
+    <br>
+    <h3>Нарушенные права</h3>
+    {% for hr in act.violationinact_set.all  %}
+        <li> {{ hr.rights }}</li>
+    {% endfor %}
+
+    <h3>Причастные лица</h3>
+    {% for pia in act.personinact_set.all %}
+        {% if  pia.status_in_act == "Винний"%}
+            <li> <a href="{% url 'one_person' pia.person.id %}">{{ pia.person.name }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+
+
+</div>
+
+{% endblock %}

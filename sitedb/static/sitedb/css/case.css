@@ -1,0 +1,22 @@
+main .case {
+    float: left;
+    display: block;
+    border: 1px solid rgb(30,130,120);
+    width: 100%;
+}
+
+main .case img {
+    float: left;
+    object-fit: cover;
+    margin-right: 2px;
+    width: 70px;
+    height: 70px;
+}
+
+main .case h3 {
+    font-size: 24px
+}
+
+main .case b {
+    font-size: 20px
+}

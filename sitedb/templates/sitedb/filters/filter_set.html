@@ -1,0 +1,19 @@
+<div class="btn-group dropright">
+        <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+         {{ key }}
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  id="{{ key }}">
+            <ul>
+                <input type="text" class="{{ key }}" placeholder="choice..." id="myInput" onkeyup="fil_Func('{{ key }}')">
+                {% for name in values %}
+                    <li><label><input type="checkbox" name="{{ key }}" value="{{ name.0 }}" id={{ name.0 }}>
+                        {{ name.1 }}</label>
+                    </li>
+                 {% endfor %}
+            </ul>
+        </div>
+
+</div>
+

@@ -1,0 +1,54 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block title %}
+{{ head }}
+{% endblock %}
+
+{% block main %}
+<h2>{{ head }}</h2>
+<br>
+{% if object.full_name %}
+<li>Название организации: {{ object.full_name }}</li>
+{% endif %}
+{% if object.address %}
+<li>Адрес: {{ object.address }}</li>
+{% endif %}
+{% if object.phonenumber %}
+<li>Телефон: {{ object.phonenumber }}</li>
+{% endif %}
+{% if object.site_org %}
+<li>Сайт: {{ object.site_org }}</li>
+{% endif %}
+{% if object.Email %}
+<li>Электронный адрес: {{ object.Email }}</li>
+{% endif %}
+{% if object.srtucture %}
+<li>Структурное подразделение: {{ object.srtucture }}</li>
+{% endif %}
+<br>
+{% if staff %}
+<h3>Сотрудники организации:</h3>
+    {% for pow in staff %}
+    <li><a href="{% url 'one_person' pow.person.id %}">{{ pow.person }}</a>
+         Должность {{ pow.position }}
+        {% if pow.date %}
+             С {{ pow.date }}
+                {% if pow.date_of_end %}
+             по {{ pow.date_of_end }}
+            {% endif %}
+        {% endif %}
+    </li>
+    {% endfor %}
+{% endif %}
+<br>
+{% if prisoner %}
+<h3>Лица, которые здесь содержатся: </h3>
+<br>
+{% for item in prisoner %}
+    {% with pers=item.persecution.victim %}
+    {% include 'sitedb/person_information.html' %}
+    {% endwith %}
+{% endfor %}
+{% endif %}
+
+{% endblock %}

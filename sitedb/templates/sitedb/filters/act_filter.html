@@ -1,0 +1,19 @@
+
+{% if act_form %}
+<div class="date-search">
+    <p>По дате совершения акта</p>
+    <div class="date-b">
+    <label class="date-input">От</label>
+    <input type="date" name="a_d_b">
+    </div>
+    <div class="date-e">
+    <label class="date-input">До</label>
+    <input type="date" name="a_d_e">
+    </div>
+    <br>
+</div>
+{% for key, values in act_form.items %}
+    {% include 'sitedb/filters/filter_set.html' %}
+<p></p>
+{% endfor %}
+{% endif %}

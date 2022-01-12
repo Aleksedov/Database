@@ -1,0 +1,60 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block title %}
+{{ head }}
+{% endblock %}
+
+{% block main %}
+<h2>{{ head }}</h2>
+{% if object.overview %}</ul>
+<ul>{{ object.overview }}</ul>
+{% endif %}
+{% if user.is_authenticated %}
+    <div class="case_statistic">
+    <h3>Статистика по делу</h3>
+        <ul>
+            <li>Количество преследования в кейсе: <b>{{ object.persecution_set.all|length }}</b></li>
+            <li>Количество фигурантов в кейсе: <b>{{ object.victims|length }} </b></li>
+            <li>Количество нарушений прав человека в этих преследованиях: <b>{{ object.all_acts|length }}</b></li>
+            <li>Количество текстов вынесенных приговоров в кейсе: <b>{{ object.sentence_text|length }}</b></li>
+            <li>Количество судебных решений в кейсе: <b>{{ object.last_acts|length }}</b>. В том числе:
+            {% for key, value in object.decisions.items %}
+            <ul> {{ key }}: <b>{{ value|length }}</b></ul>
+            {% endfor %}
+            </li>
+            <li>Количество слушаний без решений: <b>{{ object.pendings|length }}</b></li>
+            <li>Количество лишенных свободы на данный момент: <b>{{ object.deprived|length }}</b></li>
+            <li>Количество лишенний свободы в кейсе : <b>{{ object.deprived_total|length }}</b></li>
+        </ul>
+
+    </div>
+{% endif %}
+{% if object.name == "Призыв" %}</ul>
+    <ul><i> На {{ object.now }} Крымская правозащитная группа зафиксировала <b>{{ object.persecution_set.all|length }}</b>
+        уголовных дел по ст.328 УК РФ, переданных в "суды" Крыма за весь период оккупации. В том числе:
+            {% for key, value in object.decisions.items %}
+             <ul> {{ key }}: <b>{{ value|length }}</b></ul>
+            {% endfor %}
+        Еще <b>{{ object.pendings|length }}</b> находятся на рассмотрении.
+    </i></ul>
+
+<br>
+<div style="width:  900px; height: 500px"><canvas id="chartCriminal"></canvas></div>
+<div style="width:  900px; height: 500px"><canvas id="chartMonth"></canvas></div>
+
+{% else %}
+    <ul><i> На {{ object.now }} Крымская правозащитная группа зафиксировала <b>{{ object.persecution_set.all|length }}</b>
+        преследований в рамках этого дела в отношении <b>{{ object.victims|length }}</b> человек.
+    </i></ul>
+    {% if case.deprived %}
+        <ul>В рамках кейса в данный момент <b>{{ object.deprived|length }}</b> человек лишены свободы. </ul>
+    {% endif %}
+{% endif %}
+
+
+    {% for persc in persecutions  %}
+        {% include 'sitedb/persecution_information.html' %}
+    {% endfor %}
+
+{% endblock %}
+

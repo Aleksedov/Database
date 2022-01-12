@@ -1,0 +1,32 @@
+main .persecution {
+    float: left;
+    display: block;
+    border: 2px solid rgb(30,130,120);
+    width: 100%;
+}
+
+main .persecution button {
+    height: 32px;
+    margin: 5px;
+    background-color: rgb(30,130,120);
+    color: white;
+    font-size: 16px;
+}
+
+main .persecution .dropdown-menu {
+    width: 500px;
+    padding: 5px;
+}
+
+
+main .persecution img {
+    float: left;
+    object-fit: cover;
+    margin-right: 5px;
+    width: 200px;
+    height: 200px;
+}
+
+main .persecution h3 b {
+    font-size: 24px;
+}

@@ -1,0 +1,15 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block main %}
+<div class = 'article_inf'>
+
+    <h2> Статья: {{ article }}</h2>
+    <li> {{ article.title }}</li>
+    <br>
+
+    <h3>Преследования по этой статье</h3>
+    {% for persc in persecutions %}
+        {% include 'sitedb/persecution_information.html' %}
+    {% endfor %}
+
+{% endblock %}

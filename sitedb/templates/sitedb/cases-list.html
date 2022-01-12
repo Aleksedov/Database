@@ -1,0 +1,38 @@
+{% extends 'sitedb/layout.html' %}
+
+{% block title %}
+{{ head }}
+{% endblock %}
+
+{% block nav %}
+    <form id="search-form_nav" action=''  method="GET">
+        <div class="btn-group dropdown">
+            <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+             Choise
+            </button>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  id="choise">
+                <ul>
+                    <input type="text" class="{{ key }}" placeholder="choice..." id="myInput" onkeyup="fil_Func('choise')">
+                    {% for obj in rest %}
+                        <a href="{% url 'one_case' obj.id %}"><li>{{ obj.name }}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+
+    </div>
+            </form>
+    <form id="search" action=''  method="GET">
+            <input name="q" id="search-field_nav" type="text" placeholder="Search..." onkeyup="input_Func(event)">
+    </form>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ head }}</h1>
+
+    {% for obj in object_list  %}
+        {% include 'sitedb/case-inf.html' %}
+    {% endfor %}
+
+{% endblock %}
