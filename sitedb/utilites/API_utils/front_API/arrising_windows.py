@@ -32,8 +32,6 @@ class Connect_win(QtWidgets.QDialog):
 		self.add_btn.setGeometry(QtCore.QRect(20, 100, 220, 30))
 		self.add_btn.clicked.connect(lambda: self.check())
 
-	def closeEvent(self, event):
-		self.conn.close()
 
 	def draw(self):
 		self.setWindowTitle('Подключение')
