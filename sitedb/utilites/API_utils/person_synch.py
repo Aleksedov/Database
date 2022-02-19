@@ -2,9 +2,9 @@ import os
 import sqlite3
 import requests
 
-from sitedb.utilites.API_utils.utils.tables_class import *
-from sitedb.utilites.API_utils.utils.API_utils import trans_date, get_content, compare_object, create_request_for_post
-from sitedb.utilites.API_utils.utils.API_utils import compare_date_object, create_request_date_for_post, get_token
+from utils.tables_class import *
+from utils.API_utils import trans_date, get_content, compare_object, create_request_for_post
+from utils.API_utils import compare_date_object, create_request_date_for_post, get_token
 
 def persons_analys(url, curs, session):
     """
@@ -13,47 +13,52 @@ def persons_analys(url, curs, session):
     :param curs: курсор соединения к базе
     :return:
     """
+
     type_url = url + 'persons_api/'                          # сcылка на API - список объектов # отличие 1
     cont = get_content(type_url, session)                    # информация о структурах на сайте в формате JSON
-    if not cont:
-        return
-    objs_json = JSON_Tables('obj_site', cont)
-    objs_json.add_all_items()
+    if cont:
+        objs_json = JSON_Tables('obj_site', cont)
+        objs_json.add_all_items()
+        print("обьектов на сайте = ", len(objs_json.items))
+    else:
+        print("обьекті на сайте отсутсвуют")
+        objs_json = {}
+
     print(objs_json)
     db_objs = Tables("Людина", curs)  # отличие 2
     print(db_objs)
     db_objs.add_all_items()
-    print("обьектов на сайте = ", len(objs_json.items), "обьектов в базе  = ", len(db_objs.items))
-
-    for i_site in objs_json.items:
-        obj_request = type_url + str(i_site) + '?format=api'
-        if i_site not in db_objs.items:
-            print('элемент сайта отсутствует в базе и его необходимо удалить', i_site)
-            session.delete(obj_request)
-        else:
-            # отличие 4 данные в функции
-            pare_keys = {
-                "biography": "Біографія",
-                "citizenship": "Громадянство",
-            }
-            discr = compare_object(objs_json.items[i_site], db_objs.items[i_site], pare_keys)
-            pare_date_keys = {
-                "date_of_birth": "Дата народження"
-               }
-            discr = compare_date_object(objs_json.items[i_site], db_objs.items[i_site], pare_date_keys, discr)
-            if discr:
-                print("Несовпадение в элементе -", objs_json.items[i_site])
-                site_p = objs_json.items[i_site] \
-                    # отличие 5    обязательная строка
-                pt = {
-                    "id": "%s" % site_p.id,
-                    "name": "%s" % site_p.name}
-                for key, value in discr.items():
-                    pt[key] = value
-                rpt = session.put(obj_request, json=pt)
+    print("обьектов в базе  = ", len(db_objs.items))
+    if objs_json:
+        for i_site in objs_json.items:
+            obj_request = type_url + str(i_site) + '?format=api'
+            if i_site not in db_objs.items:
+                print('элемент сайта отсутствует в базе и его необходимо удалить', i_site)
+                session.delete(obj_request)
+            else:
+                # отличие 4 данные в функции
+                pare_keys = {
+                    "biography": "Біографія",
+                    "citizenship": "Громадянство",
+                }
+                discr = compare_object(objs_json.items[i_site], db_objs.items[i_site], pare_keys)
+                pare_date_keys = {
+                    "date_of_birth": "Дата народження"
+                   }
+                discr = compare_date_object(objs_json.items[i_site], db_objs.items[i_site], pare_date_keys, discr)
+                if discr:
+                    print("Несовпадение в элементе -", objs_json.items[i_site])
+                    site_p = objs_json.items[i_site] \
+                        # отличие 5    обязательная строка
+                    pt = {
+                        "id": "%s" % site_p.id,
+                        "name": "%s" % site_p.name}
+                    for key, value in discr.items():
+                        pt[key] = value
+                    rpt = session.put(obj_request, json=pt)
 
     for i_base in db_objs.items:
-        if i_base not in objs_json.items:
+        if not objs_json or i_base not in objs_json.items:
             print('новый элемент из базы для внесения на сайт', i_base)
             add_new_obj(type_url, db_objs.items[i_base], session)
 
@@ -77,9 +82,10 @@ def add_new_obj(type_url, db_obj, session):
         "date_of_birth": "Дата народження",
       }
     pst = create_request_date_for_post(db_obj, pst, pare_date_keys)
-
-    session.post(obj_request, json=pst)
-    # print(pst, obj_request)
+    try:
+        session.post(obj_request, json=pst)
+    except:
+        print("onnectionError(err, request=request)",pst, obj_request)
     # rpost = session.post(obj_request, json=pst)
     # print(rpost)
 

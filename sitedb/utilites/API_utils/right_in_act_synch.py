@@ -2,9 +2,9 @@ import os
 import sqlite3
 import requests
 
-from sitedb.utilites.API_utils.utils.tables_class import *
-from sitedb.utilites.API_utils.utils.API_utils import trans_date, get_content, compare_object, create_request_for_post
-from sitedb.utilites.API_utils.utils.API_utils import compare_date_object, create_request_date_for_post, get_token
+from utils.tables_class import *
+from utils.API_utils import trans_date, get_content, compare_object, create_request_for_post
+from utils.API_utils import compare_date_object, create_request_date_for_post, get_token
 
 
 
@@ -17,36 +17,39 @@ def via_analys(url, curs, session):
     """
     type_url = url + 'via_api/'                          # сcылка на API - список объектов # отличие 1
     cont = get_content(type_url, session)                                # информация о структурах на сайте в формате JSON
-    if not cont:
-        return
-    objs_json = JSON_Tables('obj_site', cont)
-    objs_json.add_all_items()
+    if cont:
+        objs_json = JSON_Tables('obj_site', cont)
+        objs_json.add_all_items()
+        print("обьектов на сайте = ", len(objs_json.items))
+    else:
+        print("обьекті на сайте отсутсвуют")
+        objs_json = {}
     print(objs_json)
     db_objs = Tables("Акт", curs)                         # отличие 2
     print(db_objs)
     db_objs.add_all_items()
-    print("обьектов на сайте = ", len(objs_json.items), "обьектов в базе  = ", len(db_objs.items))
+    print("обьектов в базе  = ", len(db_objs.items))
     pers_in_aip_site = {}
+    if objs_json:
+        for i_site in objs_json.items:
+            obj_request = type_url + str(i_site) + '?format=api'
+            if objs_json.items[i_site].act not in db_objs.items:
+                print('акт сайта отсутствует в базе и удалется', objs_json.items[i_site].act)
+                session.delete(obj_request)
+                continue
+            aip_base = db_objs.items[objs_json.items[i_site].act].__dict__['Порушені права']
+            aip_base = aip_base.split(';')
+            if str(objs_json.items[i_site].rights) not in aip_base:
+                print('право %s в акте %s отсутствует в базе и удаляется' % (objs_json.items[i_site].rights,
+                      objs_json.items[i_site].act))
+                session.delete(obj_request)
+                continue
+            act_site = objs_json.items[i_site].act
+            if not act_site in pers_in_aip_site:
+                pers_in_aip_site[act_site] = []
+            pers_in_aip_site[act_site].append(objs_json.items[i_site].rights)  #добавляет в ghfdj к frne с сайта
 
-    for i_site in objs_json.items:
-        obj_request = type_url + str(i_site) + '?format=api'
-        if objs_json.items[i_site].act not in db_objs.items:
-            print('акт сайта отсутствует в базе и удалется', objs_json.items[i_site].act)
-            session.delete(obj_request)
-            continue
-        aip_base = db_objs.items[objs_json.items[i_site].act].__dict__['Порушені права']
-        aip_base = aip_base.split(';')
-        if str(objs_json.items[i_site].rights) not in aip_base:
-            print('право %s в акте %s отсутствует в базе и удаляется' % (objs_json.items[i_site].rights,
-                  objs_json.items[i_site].act))
-            session.delete(obj_request)
-            continue
-        act_site = objs_json.items[i_site].act
-        if not act_site in pers_in_aip_site:
-            pers_in_aip_site[act_site] = []
-        pers_in_aip_site[act_site].append(objs_json.items[i_site].rights)  #добавляет в ghfdj к frne с сайта
-
-    list_obj_request = type_url + '?format=api'
+    obj_request = type_url + '?format=api'
     for i_base in db_objs.items:
         aip_base = db_objs.items[i_base].__dict__['Порушені права']
         if not aip_base:
@@ -60,8 +63,10 @@ def via_analys(url, curs, session):
                     "act": i_base,
                     "rights": int(h_r)
                 }
-                rpst = session.post(list_obj_request, json=pst)
-                print(rpst, list_obj_request, pst)
+                try:
+                    session.post(obj_request, json=pst)
+                except:
+                    print("onnectionError(err, request=request)", pst, obj_request)
 
         else:
             for h_r in aip_base:
@@ -71,7 +76,10 @@ def via_analys(url, curs, session):
                         "act": i_base,
                         "rights": h_r
                     }
-                    session.post(list_obj_request, json=pst)
+                    try:
+                        session.post(obj_request, json=pst)
+                    except:
+                        print("onnectionError(err, request=request)", pst, obj_request)
 
 
 def main():

@@ -34,8 +34,10 @@ def get_content(type_url, session):
     :param session: сессия подлючения пользователя
     :return: response - JSON словарь объектов на сайте
     """
+    print(type_url, session)
     try:
         response_get = session.get(type_url)
+
     except:
         print("Ошибка соединения")
         return False

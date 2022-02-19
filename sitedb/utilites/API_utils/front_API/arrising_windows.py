@@ -32,6 +32,25 @@ class Connect_win(QtWidgets.QDialog):
 		self.add_btn.setGeometry(QtCore.QRect(20, 100, 220, 30))
 		self.add_btn.clicked.connect(lambda: self.check())
 
+	def closeEvent(self, event):
+		print("UPDATE tech_tbl  SET info = '%s' WHERE name = '%s'" % ('login', self.login.text()))
+		current_log = self.curs.execute("SELECT * FROM tech_tbl WHERE info = 'login'").fetchall()
+		if current_log:
+
+			self.curs.execute("UPDATE tech_tbl  SET info = '%s' WHERE name = '%s'" % ('login', self.login.text()))
+			self.curs.execute("UPDATE tech_tbl  SET info = '%s' WHERE name = '%s'" % ('password', self.password.text()))
+		else:
+			print("INSERT INTO tech_tbl VALUES ({},{})".format('login', self.login.text()))
+			self.curs.execute("INSERT INTO tech_tbl (name,info) VALUES ('%s','%s')" % ('login', self.login.text()))
+			self.curs.execute("INSERT INTO tech_tbl (name,info) VALUES ('%s','%s')" % ('password', self.password.text()))
+		self.conn.commit()
+		test = self.curs.execute("SELECT * from tech_tbl").fetchall()
+		print(test)
+
+		print(' Новій логин:{}, новій пароль: {}'.format(self.login.text(),self.password.text()))
+		self.conn.commit()
+		password = self.curs.execute("SELECT info FROM tech_tbl WHERE name = 'password'").fetchone()
+		print (password)
 
 	def draw(self):
 		self.setWindowTitle('Подключение')
@@ -43,9 +62,8 @@ class Connect_win(QtWidgets.QDialog):
 		if not self.root.check(auth):
 			self.close()
 			return
-		self.curs.execute("INSERT INTO tech_tbl (name,info) VALUES ('%s','%s')" % ('login', self.login.text()))
-		self.curs.execute("INSERT INTO tech_tbl (name,info) VALUES ('%s','%s')" % ('password', self.password.text()))
-		self.conn.commit()
+
+
 
 
 

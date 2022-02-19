@@ -6,22 +6,22 @@ import json
 import os
 import sqlite3
 
-from sitedb.utilites.API_utils.utils.API_utils import get_token
+from utils.API_utils import get_token
 
-from sitedb.utilites.API_utils.person_synch import persons_analys
-from sitedb.utilites.API_utils.structure_synch import stucture_analys
-from sitedb.utilites.API_utils.case_synch import case_analys
-from sitedb.utilites.API_utils.organisation_synch import organis_analys
-from sitedb.utilites.API_utils.pow_synch import pow_analys
-from sitedb.utilites.API_utils.article_synch import article_analys
-from sitedb.utilites.API_utils.persecution_synch import persecution_analys
-from sitedb.utilites.API_utils.aip_synch import aip_analys
-from sitedb.utilites.API_utils.right_synch import right_analys
-from sitedb.utilites.API_utils.status_synch import status_analys
-from sitedb.utilites.API_utils.act_synch import act_analys
-from sitedb.utilites.API_utils.right_in_act_synch import via_analys
-from sitedb.utilites.API_utils.pia_synch import pia_analys
-from sitedb.utilites.API_utils.depriving_synch import depriving_analys
+from person_synch import persons_analys
+from structure_synch import stucture_analys
+from case_synch import case_analys
+from organisation_synch import organis_analys
+from pow_synch import pow_analys
+from article_synch import article_analys
+from persecution_synch import persecution_analys
+from aip_synch import aip_analys
+from right_synch import right_analys
+from status_synch import status_analys
+from act_synch import act_analys
+from right_in_act_synch import via_analys
+from pia_synch import pia_analys
+from depriving_synch import depriving_analys
 
 
 
@@ -35,28 +35,24 @@ def api_synch(url, curs, session):
 
 
     test_url = url + 'persons_api/'
+
     cont = session.get(test_url).json()
-    try:
-        print(cont['detail'])
-        return
-    except:
-        print("Пароль верен")
+    print(session.get(test_url))
 
-
-        persons_analys(url, curs, session)
-        stucture_analys(url, curs, session)
-        case_analys(url, curs, session)
-        organis_analys(url, curs, session)
-        pow_analys(url, curs, session)
-        article_analys(url, curs, session)
-        persecution_analys(url, curs, session)
-        aip_analys(url, curs, session)
-        right_analys(url, curs, session)
-        status_analys(url, curs, session)
-        act_analys(url, curs, session)
-        via_analys(url, curs, session)
-        pia_analys(url, curs, session)
-        depriving_analys(url, curs, session)
+    persons_analys(url, curs, session)
+    stucture_analys(url, curs, session)
+    case_analys(url, curs, session)
+    organis_analys(url, curs, session)
+    pow_analys(url, curs, session)
+    article_analys(url, curs, session)
+    persecution_analys(url, curs, session)
+    aip_analys(url, curs, session)
+    right_analys(url, curs, session)
+    status_analys(url, curs, session)
+    act_analys(url, curs, session)
+    via_analys(url, curs, session)
+    pia_analys(url, curs, session)
+    depriving_analys(url, curs, session)
 
 def main():
     # admin_token = '955fe159642f8ebfefaa81c18454e09c1a73a58d'  # админский

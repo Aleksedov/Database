@@ -1,15 +1,12 @@
 import sys
 import sqlite3
-from datetime import datetime
 import requests
 import os
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
-from bs4 import BeautifulSoup
-import win32com.client
+from PyQt5 import QtGui, QtWidgets
 
 from front_API.arrising_windows import Connect_win, Choose_tables
-from sitedb.utilites.API_utils import back_API
+import back_API
 
 
 class MainWind(QtWidgets.QWidget):
@@ -94,9 +91,11 @@ class MainWind(QtWidgets.QWidget):
         считывает имена таблиц в базе
 
         """
-        base = "%s\%s" % (os.getcwd(), 'synch_API.sqlite3')
+        base = 'synch_API.sqlite3'
+        print(base)
         self.conn = sqlite3.connect(base)
         self.curs = self.conn.cursor()
+        # self.curs.execute("DROP TABLE 'tech_tbl'")
         list_existed_tables = (title[0] for title in self.curs.execute('SELECT name from sqlite_master where type= "table"').fetchall())
         print('name_of_tables begin', list(list_existed_tables))
         tech_tbl = 'CREATE TABLE tech_tbl (tech_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ' \
@@ -144,6 +143,7 @@ class MainWind(QtWidgets.QWidget):
         except:
             self.connLabel.setText(
                 'Подключение не установлено')
+            return
         if not 'token' in token.json():
             print(token.json())
             self.connLabel.setText("Логин/пароль не верен")
@@ -156,7 +156,6 @@ class MainWind(QtWidgets.QWidget):
         if 'detail' in cont:
             self.connLabel.setText('У вас недостаточно прав')
             return False
-
         self.connLabel.setText('Подключение установлено')
         self.session = session
         return True
